@@ -1,22 +1,48 @@
-import platform
-import psutil
+import platform   # To get OS, architecture, etc.
+import psutil     # To get CPU, memory, and disk usage
+from datetime import datetime  # To add a timestamp
 
-print("\nSystem Information:")
-print(f"System: {platform.system()}")
-print(f"Node Name: {platform.node()}")
-print(f"Release: {platform.release()}")
-print(f"Version: {platform.version()}")
-print(f"Machine: {platform.machine()}")
-print(f"Processor: {platform.processor()}")
+# 1. Function to get system information
+def get_system_info():
+    info = {}
 
-print("\nCPU Info:")
-print(f"Physical cores: {psutil.cpu_count(logical=False)}")
-print(f"Total cores: {psutil.cpu_count(logical=True)}")
-print(f"CPU usage: {psutil.cpu_percent()}%")
+    # OS & Kernel info
+    info["OS"] = platform.system()               # e.g., 'Linux'
+    info["OS Version"] = platform.version()      # OS release version
+    info["Architecture"] = platform.machine()    # e.g., 'x86_64'
+    info["Kernel"] = platform.release()          # e.g., '5.15.0-100'
 
-print("\nMemory Info:")
-mem = psutil.virtual_memory()
-print(f"Total: {mem.total / (1024 ** 3):.2f} GB")
-print(f"Available: {mem.available / (1024 ** 3):.2f} GB")
-print(f"Used: {mem.used / (1024 ** 3):.2f} GB")
-print(f"Percentage: {mem.percent}%")
+    # CPU info
+    info["CPU Cores"] = psutil.cpu_count(logical=True)  # Number of cores
+    info["CPU Usage (%)"] = psutil.cpu_percent(interval=1)  # CPU usage %
+
+    # Memory info
+    memory = psutil.virtual_memory()
+    info["Total RAM (GB)"] = round(memory.total / (1024 ** 3), 2)
+    info["Used RAM (GB)"] = round(memory.used / (1024 ** 3), 2)
+
+    # Disk usage
+    disk = psutil.disk_usage('/')
+    info["Disk Total (GB)"] = round(disk.total / (1024 ** 3), 2)
+    info["Disk Used (GB)"] = round(disk.used / (1024 ** 3), 2)
+
+    return info
+
+# 2. Function to save data to file
+def save_report(info):
+    filename = "system_report.txt"
+
+    with open(filename, "w") as f:
+        f.write("=== System Report ===\n")
+        f.write(f"Generated on: {datetime.now()}\n\n")
+
+        for key, value in info.items():
+            f.write(f"{key}: {value}\n")
+
+    print(f"Report saved to {filename}")
+
+# 3. Main execution
+if __name__ == "__main__":
+    system_info = get_system_info()   # Get the data
+    save_report(system_info)          # Save to file
+

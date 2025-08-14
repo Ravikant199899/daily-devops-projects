@@ -1,0 +1,13 @@
+=== System Report ===
+Generated on: 2025-08-14 13:29:39.364737
+
+OS: Linux
+OS Version: #10~24.04.1-Ubuntu SMP Fri Jul 18 20:44:30 UTC 2025
+Architecture: x86_64
+Kernel: 6.14.0-1010-aws
+CPU Cores: 1
+CPU Usage (%): 0.0
+Total RAM (GB): 0.93
+Used RAM (GB): 0.21
+Disk Total (GB): 6.71
+Disk Used (GB): 2.77
